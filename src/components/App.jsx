@@ -1,27 +1,57 @@
-import { React, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
-import { Wrapper } from './App.styled';
-import MainPage from 'components/MainPage/MainPage';
-import Loader from 'components/Loader/Loader';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import CookieConfirmation from 'components/CookieConfirmation/CookieConfirmation';
+import { useDispatch } from 'react-redux';
+import { Route, Routes } from 'react-router-dom';
+import { useAuth } from 'hooks/useAuth';
+import { useEffect, lazy, Suspense } from 'react';
+import { refreshUser } from 'redux/auth/operations';
+import { PrivateRoute } from './PrivateRoute';
+import { RestrictedRoute } from './RestrictedRoute';
+import { Navigation } from './Navigation/Navigation';
 
 
+const HomePage = lazy(() => import('../pages/Home'));
+const RegisterPage = lazy(() => import('../pages/Register'));
+const LoginPage = lazy(() => import('../pages/Login'));
+const PhonebookPage = lazy(() => import('../pages/PhonebookPage'));
 
-const App = () => {
-  return (
-    <>
-      <Wrapper>
-        <MainPage />
-          <Suspense fallback={<Loader />}>
-            <Outlet />
-          </Suspense>
-      </Wrapper>
-      <CookieConfirmation />
-      <ToastContainer autoClose={3000} position = 'top-right'/>
-    </>
-    )
+export const App = () => {
+  const dispatch = useDispatch();
+  const { isRefreshing } = useAuth();
+
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
+
+  return isRefreshing ? (
+    'Please wait, data is fetching...'
+  ) : (
+    <div>
+      <Suspense fallback={null}>
+        <Navigation/>
+        <Routes>
+          <Route index element={<HomePage />} />
+          <Route
+            path="/register"
+            element={
+              <RestrictedRoute
+                component={RegisterPage}
+                redirectTo="/contacts"
+              />
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <RestrictedRoute component={LoginPage} redirectTo="/contacts" />
+            }
+          />
+          <Route
+            path="/contacts"
+            element={
+              <PrivateRoute component={PhonebookPage} redirectTo="/login" />
+            }
+          />
+        </Routes>
+      </Suspense>
+    </div>
+  );
 };
-
-export default App;

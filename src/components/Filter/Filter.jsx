@@ -1,23 +1,19 @@
-import { useDispatch } from 'react-redux';
-import { filterContacts } from '../../redux/Actions';
-import {FilterInput} from './Filter.styled'
+import { useDispatch } from 'react-redux'
+import { setFilter } from 'redux/phonebook/filterSlice';
 
 export const Filter = () => {
   const dispatch = useDispatch();
-
-  const onFilter = e => {
-    e.preventDefault();
+  
+  const handleFinder = e => {
     const value = e.target.value.toLowerCase();
-    dispatch(filterContacts(value))
-  };
-    return (
-      <FilterInput
-        type="text"
-        name="filter"
-        onChange={onFilter}
-        placeholder="Find contacts by name"
-      />
-    );
-  };
+    dispatch(setFilter(value))
+  }
 
-export default Filter;
+        return (
+          <>
+          Find contacts by name 
+              <input name="filter" onChange={handleFinder}></input>
+          </>
+
+        )
+    }
