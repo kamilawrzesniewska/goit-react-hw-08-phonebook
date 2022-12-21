@@ -1,82 +1,128 @@
-import styles from './ContactForm.module.css';
-import { Button } from 'components/Button/Button';
-import React from 'react';
-import {
-  useGetContactsQuery,
-  useAddContactMutation,
-} from 'redux/services/contactsApi';
+import styled from 'styled-components';
+import { useAddContactMutation } from 'services/phonebookApi';
 
-const ContactForm = () => {
-  const { form, form__field, label, input } = styles;
+const Inputbox = styled.div`
+  position: relative;
+  max-width: 100%;
+  height: 50px;
+  margin-bottom: 50px;
+  &:last-child {
+  margin-bottom: 0;
+`;
 
-  const { data: contacts = [] } = useGetContactsQuery();
-  const [addContact, { isLoading }] = useAddContactMutation();
+const Input = styled.input`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border: 2px solid #000;
+  outline: none;
+  background: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.2em;
+  box-sizing: border-box;
+  &:focus ~ span {
+    transform: translateX(-13px) translateY(-35px);
+    font-size: 1em;
+  }
+  &:not(:placeholder-shown) ~ span {
+    color: red;
+    transform: translateX(-13px) translateY(-35px);
+    font-size: 1em;
+  }
+  &:valid ~ span {
+    color: #86af49;
+    transform: translateX(-13px) translateY(-35px);
+    font-size: 1em;
+  }
+`;
 
-  const onSubmit = async e => {
-    e.preventDefault();
+const Span = styled.span`
+  position: absolute;
+  top: 14px;
+  left: 20px;
+  font-size: 1em;
+  transition: 0.6s;
+  font-family: sans-serif;
+`;
 
-    const form = e.target;
+const Btn = styled.button`
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 2px solid #000;
+  outline: none;
+  background: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.2em;
+  width: 50%;
+  background: dodgerblue;
+  color: #fff;
+  border: #fff;
+  &:hover {
+    background: linear-gradient(85deg, blue);
+  }
+`;
+
+const ContactForm = ({ contacts }) => {
+  const [addContact] = useAddContactMutation();
+
+  const handleSubmit = evt => {
+    const form = evt.target;
     const name = form.name.value;
     const number = form.number.value;
 
-    if (contacts.some(contact => contact.name === name)) {
-      alert(`${name} is already in contacts`);
-      return;
-    }
+    evt.preventDefault();
 
-    if (contacts.some(contact => contact.phone === number)) {
-      const [filteredNumber] = contacts.filter(
-        contact => contact.phone === number
-      );
-      alert(`${number} is already in contact with ${filteredNumber.name} `);
-      return;
-    }
+    for (const contact of contacts) {
+      if (contact.name === name)
+        return alert(
+          `${name} is already in your contacts with the phone number ${contact.number}`
+        );
 
-    try {
-      await addContact({
-        name,
-        phone: number,
-      });
-    } catch (error) {
-      alert(`Failed to save the contact`);
+      if (contact.number === number)
+        return alert(
+          `${number} is already in your contacts with the name ${contact.name}`
+        );
     }
+    addContact({ name, number });
     form.reset();
   };
 
   return (
-    <form className={form} onSubmit={onSubmit}>
-      <div className={form__field}>
-        <label htmlFor="contactName" className={label}>
-          Name
+    <form onSubmit={handleSubmit}>
+      <Inputbox>
+        <label>
+          <Input
+            type="text"
+            name="name"
+            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+            required
+            placeholder=" "
+          />
+          <Span>Name</Span>
         </label>
-        <input
-          className={input}
-          id="contactName"
-          type="text"
-          name="name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          required
-        />
-      </div>
-      <div className={form__field}>
-        <label htmlFor="contactTel" className={label}>
-          Phone number
+      </Inputbox>
+      <Inputbox>
+        <label>
+          <Input
+            type="tel"
+            name="number"
+            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            required
+            placeholder=" "
+          />
+          <Span>Number</Span>
         </label>
-        <input
-          className={input}
-          id="contactTel"
-          type="tel"
-          name="number"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          required
-        />
-      </div>
-      <Button
-        type="submit"
-        title={isLoading ? 'Adding...' : 'Add contact'}
-      ></Button>
+      </Inputbox>
+      <Inputbox>
+        <Btn type="submit">Add contact</Btn>
+      </Inputbox>
     </form>
   );
 };

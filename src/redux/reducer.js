@@ -1,25 +1,25 @@
-import { setFilter, addNewContact, deleteContact } from './actions';
 import { createReducer } from '@reduxjs/toolkit';
+import { filterContacts, addToken, deleteToken } from './Actions';
+import Cookies from 'js-cookie';
 
-const sampleArray = [
-  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-];
 
-const contactInitiatialState = sampleArray;
-const filterInitialState = '';
+const initialState = {
+  filter: '',
+  token: Cookies.get('token') || '',
+};
 
-export const contactReducer = createReducer(contactInitiatialState, {
-  [addNewContact]: (state, action) => {
-    return [...state, action.payload];
-  },
-  [deleteContact]: (state, action) => {
-    return state.filter(contact => contact.id !== action.payload);
-  },
+export const filterReducer = createReducer(initialState.filter, builder => {
+  builder.addCase(filterContacts, (_, { payload }) => {
+    return payload;
+  });
 });
 
-export const filterReducer = createReducer(filterInitialState, {
-  [setFilter]: (state, action) => (state = action.payload),
+export const tokenReducer = createReducer(initialState.token, builder => {
+  builder
+    .addCase(addToken, (_, { payload }) => {
+      return payload;
+    })
+    .addCase(deleteToken, (state, { payload }) => {
+      return '';
+    });
 });
