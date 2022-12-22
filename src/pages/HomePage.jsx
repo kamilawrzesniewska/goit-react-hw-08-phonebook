@@ -29,7 +29,8 @@ const HomePage = () => {
       <MainHeader>Phonebook</MainHeader>
       {!token && (
         <Paragraph>
-          
+          Welcome! Please <StyledLink to="/register">Sign up </StyledLink>or{' '}
+          <StyledLink to="/login">Log in</StyledLink>
         </Paragraph>
       )}
       {token && <WelcomeBack />}
