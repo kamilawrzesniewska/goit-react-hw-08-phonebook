@@ -8,6 +8,10 @@ import Cookies from 'js-cookie';
 
 const Center = styled.div`
   position: relative;
+  padding: 50px 25px;
+  background: #fff;
+  max-width: 400px;
+  margin: 0 auto;
   
 `;
 
@@ -52,7 +56,7 @@ const Input = styled.input`
     font-size: 1em;
   }
   &:valid ~ span {
-    color: #86af49;
+    color: #grey;
     transform: translateX(-13px) translateY(-35px);
     font-size: 1em;
   }
@@ -79,11 +83,9 @@ const Btn = styled.button`
   border-radius: 10px;
   font-size: 1.2em;
   width: 50%;
-  background: dodgerblue;
+  background: grey;
   color: #fff;
   border: #fff;
-  &:hover {
-    background: linear-gradient(45deg, greenyellow, dodgerblue);
   }
 `;
 

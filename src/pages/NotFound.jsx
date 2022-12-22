@@ -10,7 +10,7 @@ const Main = styled.div`
   justify-content: center;
   height: 100vh;
   width: 100vw;
-  background-color: rgb(52, 56, 60);
+  background-color: grey;
 `;
 
 const Card = styled.div`
@@ -21,9 +21,7 @@ const Card = styled.div`
   max-width: 364px;
   padding: 24px;
   background: white;
-  color: rgb(14, 30, 37);
   border-radius: 8px;
-  box-shadow: 0 2px 4px 0 rgba(14, 30, 37, 0.16);
 `;
 const Header = styled.h1`
   margin: 0;
@@ -39,8 +37,7 @@ const NotFound = () => {
           <Header>Page Not Found</Header>
           <div>
             <p>
-              Looks like you've followed a broken link or entered a URL that
-              doesn't exist on this site.
+              Link not found.
             </p>
             <Link to="/">Back to our site</Link>
           </div>

@@ -11,7 +11,7 @@ const Cookie = () => {
           background: 'white',
          
           '&:hover': {
-            background: 'blue',
+            background: 'white',
           },
         }}
         expires={365}

@@ -6,7 +6,6 @@ import { useDeleteContactMutation } from 'services/phonebookApi';
 const List = styled.li`
   display: flex;
   &::before {
-    content: '•';
     color: red;
     font-weight: bold;
     display: inline-block;
@@ -22,11 +21,8 @@ const Btn = styled.button`
   border-radius: 10px;
   font-size: 1em;
   width: 30%;
-  background: blue;
+  background: grey;
   color: #fff;
-  &:hover {
-    background: dodgerblue);
-  }
 `;
 
 const ElementWrapper = styled.div`

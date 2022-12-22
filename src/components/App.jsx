@@ -18,12 +18,10 @@ const Nav = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  box-shadow: 0 2px 2px 1px green;
   padding: 15px 0;
   margin: 25px auto;
   background: white;
   max-width: 480px;
-  border-radius: 10px;
 `;
 
 const SpinnerWrapper = styled.div`

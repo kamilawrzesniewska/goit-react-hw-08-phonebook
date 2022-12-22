@@ -15,6 +15,27 @@ const Input = styled.input`
   top: 0;
   left: 0;
   width: 100%;
+  border: 2px solid #000;
+  outline: none;
+  background: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 1.2em;
+  box-sizing: border-box;
+  &:focus ~ span {
+    transform: translateX(-13px) translateY(-35px);
+    font-size: 1em;
+  }
+  &:not(:placeholder-shown) ~ span {
+    color: red;
+    transform: translateX(-13px) translateY(-35px);
+    font-size: 1em;
+  }
+  &:valid ~ span {
+    color: #86af49;
+    transform: translateX(-13px) translateY(-35px);
+    font-size: 1em;
+  }
 `;
 
 const Span = styled.span`
@@ -38,7 +59,7 @@ const Btn = styled.button`
   border-radius: 10px;
   font-size: 1.2em;
   width: 50%;
-  background: dodgerblue;
+  background: grey;
   color: #fff;
   border: #fff;
   &:hover {

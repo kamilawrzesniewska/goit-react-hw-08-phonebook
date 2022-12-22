@@ -48,7 +48,7 @@ const Input = styled.input`
     font-size: 1em;
   }
   &:valid ~ span {
-    color: #86af49;
+    color: #000;
     transform: translateX(-13px) translateY(-35px);
     font-size: 1em;
   }
@@ -75,11 +75,9 @@ const Btn = styled.button`
   border-radius: 10px;
   font-size: 1.2em;
   width: 50%;
-  background: dodgerblue;
+  background: grey;
   color: #fff;
   border: #fff;
-  &:hover {
-    background: linear-gradient(45deg, greenyellow, dodgerblue);
   }
 `;
 
